@@ -34,15 +34,13 @@ time = 0;
 i=0;
 tic
 
+offset = 12000;
+maxY = 500;
 maxPoints = 20; % max number of data points displayed at a time
 ADC1pos = zeros(maxPoints,1);%1-100
 ADC2pos = zeros(maxPoints,1);%1-100
 ADC3pos = zeros(maxPoints,1);%1-100
-ADC4pos = zeros(maxPoints,1);%1-100
-ADC5pos = zeros(maxPoints,1);%1-100
-ADC6pos = zeros(maxPoints,1);%1-100
-ADC7pos = zeros(maxPoints,1);%1-100
-ADC8pos = zeros(maxPoints,1);%1-100
+
 t = 1:1:maxPoints;
 
 ADCData = zeros(1,7);
@@ -58,37 +56,19 @@ while 1
     a2 = fgetl(M2USB);
     fwrite(M2USB,1); 
 
-    
-    
     %% Parse the data sent by the microcontroller
 	% Expecting data in the form: [uint ADC1, uint ADC2, uint ADC3, uint ADC4]
-    ADC1 = hex2dec(a2(1:4))
+    ADC1 = hex2dec(a2(1:4))-offset;
+    ADC2 = hex2dec(a2(5:8))-offset;
+    ADC3 = hex2dec(a2(9:12))-offset;
     
-    
-%     b0_switch = hex2dec(a2(29:32));
-%     
-%     if(b0_switch == 0)
-%         disp('poo');
-%     end
-   
-    %% Retieve and store data in array at next index
-    % ADC values for each ADC input
-    
-%     ADCData(i,1) = ADC1;
-%     ADCData(i,2) = ADC2;
-%     ADCData(i,3) = ADC3;
-%     ADCData(i,4) = ADC4;
-%     ADCData(i,5) = ADC5;
-%     ADCData(i,6) = ADC6;
-%     ADCData(i,7) = ADC7;
-%     
-
-    hallEffectData = [hallEffectData; ADC1];
-     
-
     ADC1pos = circshift(ADC1pos,-1);%film...
      ADC1pos(maxPoints,:) = ADC1;
-
+    ADC2pos = circshift(ADC2pos,-1);%film...
+     ADC2pos(maxPoints,:) = ADC2;
+    ADC3pos = circshift(ADC3pos,-1);%film...
+     ADC3pos(maxPoints,:) = ADC3;
+     
     i=i+1;
     
 
@@ -99,9 +79,20 @@ while 1
     hold on
     grid on
     
+    subplot(2,2,1);
     plot(t,ADC1pos(:,1),':or');
-    title('Hall Effect (f0)');
-    axis([0 maxPoints 0 1023]);
+    title('Ch3');
+    axis([0 maxPoints 0 maxY]);
+    
+    subplot(2,2,2);
+    plot(t,ADC2pos(:,1),':or');
+    title('Ch4');
+    axis([0 maxPoints 0 maxY]);
+    
+    subplot(2,2,3);
+    plot(t,ADC3pos(:,1),':or');
+    title('Ch5');
+    axis([0 maxPoints 0 maxY]);
     
     grid on
     pause(.01);

@@ -9,7 +9,7 @@
 # add their .o targets to the OBJECTS line below
 # (e.g. "OBJECTS = BetaCode.o myfile.o")
 # --------------------------------------------------------
-OBJECTS    = dooty_test.o m_usb.o m_bus.o 
+OBJECTS    = milkshake.o m_usb.o m_bus.o 
 
 # --------------------------------------------------------
 # if you need to use one of our pre-compiled libraries,
@@ -31,7 +31,7 @@ CLOCK      = 16000000
 COMPILE = avr-gcc -Wall -Os -DF_CPU=$(CLOCK) -mmcu=$(DEVICE)
 
 # symbolic targets:
-all:	dooty_test.hex
+all:	milkshake.hex
 
 .c.o:
 	$(COMPILE) -c $< -o $@
@@ -46,22 +46,22 @@ install: flash
 
 flash: all
 	dfu-programmer atmega32u4 erase
-	dfu-programmer atmega32u4 flash dooty_test.hex
+	dfu-programmer atmega32u4 flash milkshake.hex
 
 clean:
-	rm -f dooty_test.hex dooty_test.elf $(OBJECTS)
+	rm -f milkshake.hex milkshake.elf $(OBJECTS)
 
 # file targets:
-dooty_test.elf: $(OBJECTS)
-	$(COMPILE) -o dooty_test.elf $(OBJECTS) $(LIBRARIES)
+milkshake.elf: $(OBJECTS)
+	$(COMPILE) -o milkshake.elf $(OBJECTS) $(LIBRARIES)
 
-dooty_test.hex: dooty_test.elf
-	rm -f dooty_test.hex
-	avr-objcopy -j .text -j .data -O ihex dooty_test.elf dooty_test.hex
+milkshake.hex: milkshake.elf
+	rm -f milkshake.hex
+	avr-objcopy -j .text -j .data -O ihex milkshake.elf milkshake.hex
 
 # Targets for code debugging and analysis:
-disasm:	dooty_test.elf
-	avr-objdump -d dooty_test.elf
+disasm:	milkshake.elf
+	avr-objdump -d milkshake.elf
 
 cpp:
-	$(COMPILE) -E dooty_test.c
+	$(COMPILE) -E milkshake.c

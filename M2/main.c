@@ -38,15 +38,13 @@ void setup(void);
 int main(void){
 	setup();
 
-
-
 	while(1){
 
 		wdt_reset(); // Feed the dog!
 
 		// Channel 3 interrupt
 		if (ch3_int){
-			if( check(PIND, CH3_PIN) ) { 	// Signal went HIGH
+			if( check(PIND, CH3_PIN) ){ 	// Signal went HIGH
 				// Start timer!
 				ch3_start = STARTTIME; // [us] Start time
 			}
@@ -109,20 +107,20 @@ void setup(void)
         while(!m_usb_isconnected());
     }
 
-	// ***********************************
-    //  PWM Timer Initialization
-    //	Timer 0 - D7 - MOTOR_R_TIMER
-    //	Timer 1 - D6 - MOTOR_L_TIMER
-    //	Channel 1 - D0 - MOTOR_R_CHAN
-    //	Channel 1 - B6 - MOTOR_L_CHAN
-    // ***********************************
-    m_pwm_timer(MOTOR_R_TIMER, FREQ);						// Configure PWM freq
-    m_pwm_output(MOTOR_R_TIMER, MOTOR_R_CHAN, ON);			// Connect timer to output
-    m_pwm_duty(MOTOR_R_TIMER, MOTOR_R_CHAN, STOPPED_DUTY);	// Duty cycle & output
+	// // ***********************************
+ //    //  PWM Timer Initialization
+ //    //	Timer 0 - D7 - MOTOR_R_TIMER
+ //    //	Timer 1 - D6 - MOTOR_L_TIMER
+ //    //	Channel 1 - D0 - MOTOR_R_CHAN
+ //    //	Channel 1 - B6 - MOTOR_L_CHAN
+ //    // ***********************************
+ //    m_pwm_timer(MOTOR_R_TIMER, FREQ);						// Configure PWM freq
+ //    m_pwm_output(MOTOR_R_TIMER, MOTOR_R_CHAN, ON);			// Connect timer to output
+ //    m_pwm_duty(MOTOR_R_TIMER, MOTOR_R_CHAN, STOPPED_DUTY);	// Duty cycle & output
 
-    m_pwm_timer(MOTOR_L_TIMER, FREQ);						// ^^^
-    m_pwm_output(MOTOR_L_TIMER, MOTOR_L_CHAN, ON);			// ^^^
-    m_pwm_duty(MOTOR_L_TIMER, MOTOR_L_CHAN, STOPPED_DUTY);	// ^^^
+ //    m_pwm_timer(MOTOR_L_TIMER, FREQ);						// ^^^
+ //    m_pwm_output(MOTOR_L_TIMER, MOTOR_L_CHAN, ON);			// ^^^
+ //    m_pwm_duty(MOTOR_L_TIMER, MOTOR_L_CHAN, STOPPED_DUTY);	// ^^^
 
 	sei(); // Enable global interrupts
   	
